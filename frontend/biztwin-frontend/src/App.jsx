@@ -475,50 +475,83 @@ export default function App() {
           </div>
         </div>
 
-        <div className="panel">
-          <div className="panel-heading">
-            <div>
-              <h3>Digital Twin Health</h3>
-              <p>Multi-dimensional operational assessment</p>
+        <div className="panel" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+          <div>
+            <div className="panel-heading" style={{ marginBottom: '10px' }}>
+              <div>
+                <h3>Digital Twin Health</h3>
+                <p>Multi-dimensional operational assessment</p>
+              </div>
+              <span className="pill success">Optimal State</span>
             </div>
-            <span className="pill success">Optimal State</span>
+
+            {/* Score Ring & Summary */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '14px', padding: '10px 12px', background: '#F8FAFC', borderRadius: '9px', border: '1px solid #E2E8F0', marginBottom: '10px' }}>
+              <div style={{ height: '56px', width: '56px', borderRadius: '50%', background: 'conic-gradient(#4F46E5 0deg 313deg, #E2E8F0 313deg 360deg)', display: 'grid', placeItems: 'center', position: 'relative', flexShrink: 0, boxShadow: '0 2px 5px rgba(79, 70, 229, 0.15)' }}>
+                <div style={{ position: 'absolute', inset: '5px', background: '#FFFFFF', borderRadius: '50%' }} />
+                <strong style={{ position: 'relative', fontSize: '17px', fontWeight: 800, color: '#0F172A' }}>87</strong>
+              </div>
+              <div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <strong style={{ fontSize: '12.5px', color: '#0F172A' }}>Operational Score: 87/100</strong>
+                  <span style={{ fontSize: '9.5px', color: '#10B981', fontWeight: 700 }}>+4.2% MoM</span>
+                </div>
+                <p style={{ fontSize: '10.5px', color: '#64748B', margin: '3px 0 0', lineHeight: 1.4 }}>
+                  Healthy revenue momentum. GNN models identify standard shipping as primary risk factor.
+                </p>
+              </div>
+            </div>
+
+            {/* 5-Phase Architectural Telemetry */}
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px 0', borderBottom: '1px solid #F1F5F9', fontSize: '11.5px' }}>
+                <div>
+                  <strong style={{ color: '#1E293B', display: 'block', fontSize: '11.5px' }}>Phase 1: Streaming Ingestion</strong>
+                  <span style={{ fontSize: '10px', color: '#94A3B8' }}>180.5K DataCo records active</span>
+                </div>
+                <span className="pill success">Operational</span>
+              </div>
+
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px 0', borderBottom: '1px solid #F1F5F9', fontSize: '11.5px' }}>
+                <div>
+                  <strong style={{ color: '#1E293B', display: 'block', fontSize: '11.5px' }}>Phase 2: GNN Knowledge Graph</strong>
+                  <span style={{ fontSize: '10px', color: '#94A3B8' }}>18 Entities · AUC 0.942 Synced</span>
+                </div>
+                <span className="pill sky">18 Nodes Synced</span>
+              </div>
+
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px 0', borderBottom: '1px solid #F1F5F9', fontSize: '11.5px' }}>
+                <div>
+                  <strong style={{ color: '#1E293B', display: 'block', fontSize: '11.5px' }}>Phase 3A: TFT Forecasting</strong>
+                  <span style={{ fontSize: '10px', color: '#94A3B8' }}>P10, P50, P90 Multi-Horizon</span>
+                </div>
+                <span className="pill purple">Quantiles Active</span>
+              </div>
+
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px 0', borderBottom: '1px solid #F1F5F9', fontSize: '11.5px' }}>
+                <div>
+                  <strong style={{ color: '#1E293B', display: 'block', fontSize: '11.5px' }}>Phase 3B: Pearl's SCM Sandbox</strong>
+                  <span style={{ fontSize: '10px', color: '#94A3B8' }}>Do-Calculus Counterfactuals</span>
+                </div>
+                <span className="pill emerald">Do-Calculus Live</span>
+              </div>
+
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px 0', fontSize: '11.5px' }}>
+                <div>
+                  <strong style={{ color: '#1E293B', display: 'block', fontSize: '11.5px' }}>Phase 4: GraphRAG Strategy AI</strong>
+                  <span style={{ fontSize: '10px', color: '#94A3B8' }}>LLM Grounded Advisory</span>
+                </div>
+                <span className="pill indigo">Agent Active</span>
+              </div>
+            </div>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '12px 0 16px' }}>
-            <div style={{
-              height: '70px', width: '70px', borderRadius: '50%', background: 'conic-gradient(#4F46E5 0deg 313deg, #E2E8F0 313deg 360deg)',
-              display: 'grid', placeItems: 'center', position: 'relative'
-            }}>
-              <div style={{ position: 'absolute', inset: '7px', background: '#FFFFFF', borderRadius: '50%' }} />
-              <strong style={{ position: 'relative', fontSize: '18px', fontWeight: 800 }}>87</strong>
-            </div>
-            <div>
-              <strong style={{ fontSize: '13px', display: 'block' }}>Operational Health: 87/100</strong>
-              <p style={{ fontSize: '11px', color: '#64748B', margin: '4px 0 0', lineHeight: 1.5 }}>
-                Positive revenue momentum and margin. GNN identifies standard carrier shipping as primary risk factor.
-              </p>
-            </div>
-          </div>
-
-          <div style={{ borderTop: '1px solid #F1F5F9', paddingTop: '10px' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', fontSize: '12px' }}>
-              <span>Phase 1 Streaming Engine</span>
-              <span className="pill success">Operational</span>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', fontSize: '12px' }}>
-              <span>Phase 2 GNN Knowledge Graph</span>
-              <span className="pill sky">65 Nodes Synced</span>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', fontSize: '12px' }}>
-              <span>Phase 3A TFT Forecasting</span>
-              <span className="pill purple">Quantiles Active</span>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', fontSize: '12px' }}>
-              <span>Phase 3B Pearl's SCM Sandbox</span>
-              <span className="pill emerald">Do-Calculus Live</span>
-            </div>
-          </div>
-        </div>
+          {/* Bottom Telemetry Bar */}
+          <div style={{ marginTop: '10px', padding: '7px 10px', background: '#F8FAFC', borderRadius: '6px', border: '1px solid #E2E8F0', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '10px', color: '#64748B' }}>
+            <span><strong>Pipeline Latency:</strong> 38ms</span>
+            <span><strong>Uptime:</strong> 99.98%</span>
+            <span style={{ color: '#059669', fontWeight: 600 }}>0 Critical Alerts</span>
+          </div>        </div>
       </div>
 
       <div className="dashboard-grid lower-grid">
