@@ -28,7 +28,16 @@ import SettingsPage from './pages/Settings';
 // ─────────────────────────────────────────────────────────────────────────────
 export default function App() {
   // ── Shell & UI State ────────────────────────────────────────────────────
-  const [page, setPage] = useState('dashboard');
+  const [page, setPage] = useState(() => {
+    try {
+      const hash = window.location.hash.replace(/^#\/?/, '');
+      if (hash) return hash;
+      const params = new URLSearchParams(window.location.search);
+      const p = params.get('page');
+      if (p) return p;
+    } catch {}
+    return 'dashboard';
+  });
   const [mobileNav, setMobileNav] = useState(false);
   const [search, setSearch] = useState('');
   const [toast, setToast] = useState('');
