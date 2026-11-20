@@ -1,11 +1,27 @@
-# BizTwin AI — Working Demo
+# Digital Twin for Small Businesses
 
-BizTwin AI is a business-intelligence MVP: a React/Vite dashboard backed by a FastAPI API.
-It computes every number on screen from the active dataset. It is not a production digital twin
-and it does **not** train a TFT, GNN, LLM, or causal model.
+Enterprise-grade Digital Twin Platform powered by Multi-Modal Graph Neural Networks (GNN), Temporal Fusion Transformers (TFT), and Pearl's Counterfactual Structural Causal Models (SCM).
 
-The default dataset is the **DataCo Supply Chain** CSV in the project root:
-180,519 rows, 65,752 orders, Jan 2015 → Jan 2018, USD.
+---
+
+## ⚡ Quickstart (One-Click Launch)
+
+### Windows (Client One-Click)
+Simply **double-click `run.bat`** (or `start.bat`) in the root folder.
+* Automatically verifies **Python 3.10+** and **Node.js** prerequisites.
+* Creates an isolated Python virtual environment (`.venv`).
+* Installs all backend dependencies from `backend/requirements.txt` (A to Z).
+* Installs all frontend packages via `npm install` (A to Z).
+* Starts both the FastAPI backend (`http://127.0.0.1:8000`) and Vite UI (`http://localhost:5173`).
+* Automatically opens your default web browser to the dashboard.
+* **To stop:** Press `[ENTER]` in the launcher window or double-click **`stop.bat`**.
+
+### macOS / Linux
+```bash
+chmod +x run.sh stop.sh
+./run.sh
+```
+To stop: `./stop.sh`
 
 ---
 
