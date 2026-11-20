@@ -44,9 +44,9 @@ FORECAST_CACHE_PATH = PROJECT_ROOT / "forecast_cache.json"
 MAX_UPLOAD_BYTES = 150 * 1024 * 1024
 
 app = FastAPI(
-    title="BizTwin AI Enterprise Digital Twin Platform",
+    title="Digital Twin for Small Businesses Platform",
     version="2.5.0",
-    description="Multi-Modal Graph Neural Networks, Temporal Fusion Transformer (TFT), and Pearl's Counterfactual AI Platform for SMBs.",
+    description="Multi-Modal Graph Neural Networks, Temporal Fusion Transformer (TFT), and Pearl's Counterfactual AI Platform for Small Businesses.",
 )
 
 app.add_middleware(
@@ -291,7 +291,7 @@ def _load_tft_cache() -> Dict[str, Any]:
 @app.get("/")
 def root():
     return {
-        "platform": "BizTwin AI Enterprise Digital Twin Platform",
+        "platform": "Digital Twin for Small Businesses Platform",
         "architecture": "4-Phase Multi-Modal GNN, TFT & Pearl's Counterfactual SCM",
         "status": "operational",
         "docs": "/docs",
@@ -304,7 +304,7 @@ def root():
 def health():
     return {
         "status": "online",
-        "service": "BizTwin AI Digital Twin Engine",
+        "service": "Digital Twin for Small Businesses Engine",
         "dataset_active": DATACO_PATH.exists() or ACTIVE_PATH.exists(),
         "tft_cache_ready": FORECAST_CACHE_PATH.exists(),
         "streaming_status": STREAM_STATS["status"],
@@ -1033,7 +1033,7 @@ def graphrag_assistant(req: AssistantInput):
 
     else:
         answer = (
-            f"BizTwin AI Digital Twin grounded reasoning: I can provide real-time GraphRAG multi-hop insights "
+            f"Digital Twin for Small Businesses grounded reasoning: I can provide real-time GraphRAG multi-hop insights "
             f"across your 180,519 supply chain records, TFT multi-horizon forecasting trajectories, and Pearl's counterfactual what-if simulations."
         )
         citations = ["[Neo4j Enterprise Graph]", "[Temporal Fusion Transformer]", "[Pearl's Do-Calculus SCM]"]
