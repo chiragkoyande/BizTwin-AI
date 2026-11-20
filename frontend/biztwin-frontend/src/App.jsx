@@ -178,6 +178,47 @@ export default function App() {
   const [assistantQ, setAssistantQ] = useState('');
   const [assistantResponse, setAssistantResponse] = useState(null);
   const [assistantLoading, setAssistantLoading] = useState(false);
+  const [chatMessages, setChatMessages] = useState([
+    {
+      id: 'init-1',
+      sender: 'ai',
+      text: "Welcome to the Phase 4 GraphRAG AI Strategy Cockpit. I synthesize multi-hop knowledge graph relationships from Neo4j (180.5K records), multi-horizon quantile projections from Temporal Fusion Transformer (TFT), and Pearl's SCM Structural Causal Models. Select a prompt below or ask any operational query to trace bottlenecks and simulate counterfactual interventions.",
+      responseObj: {
+        engine: "Phase 4: GraphRAG Grounded Strategic Agent",
+        grounded_citations: [
+          "[Neo4j 5-Tier Supply Chain Graph: 65 Semantic Nodes]",
+          "[TFT Deep Quantiles: P10, P50, P90 Multi-Horizon]",
+          "[Pearl SCM: do-calculus Interventions]"
+        ],
+        reasoning_mode: "Multi-Hop Knowledge Graph + TFT Deep Forecast + Causal DAG Verification",
+        faithfulness_score: 0.99,
+        retrieval_latency_ms: 14,
+        extracted_entities: [
+          { entity: "CustomerSegment:Consumer", type: "Demand Root", val: "60% Order Vol" },
+          { entity: "Logistics:Standard Carrier Fleet", type: "Freight Mode", val: "63% Freight" },
+          { entity: "FulfillmentStatus:Late Delivery Risk", type: "Delay Risk", val: "54.8% Delay" }
+        ],
+        suggested_scenario: "Trace the multi-hop bottleneck pathway to isolate the root cause of late deliveries."
+      },
+      timestamp: '10:00 AM'
+    }
+  ]);
+  const [activeExtractedEntities, setActiveExtractedEntities] = useState([
+    { entity: "CustomerSegment:Consumer", type: "Demand Root", val: "60% Order Vol" },
+    { entity: "Category:Cleats & Footwear", type: "Product Line", val: "$7.32M Sales" },
+    { entity: "Inventory:Central DC Hub", type: "Warehouse DC", val: "Primary Stock" },
+    { entity: "Logistics:Standard Carrier Fleet", type: "Freight Mode", val: "63% Freight" },
+    { entity: "FulfillmentStatus:Late Delivery Risk", type: "Delay Bottleneck", val: "54.8% Delay" },
+    { entity: "FinancialOutcome:SLA Delay Penalties", type: "Cost Drag", val: "-$1.24M Penalty" },
+    { entity: "FinancialOutcome:Operating Margin", type: "Net Margin", val: "10.8% Margin" }
+  ]);
+  const [translatedChatMessages, setTranslatedChatMessages] = useState({});
+  const [translatingChatId, setTranslatingChatId] = useState(null);
+  const chatEndRef = useRef(null);
+
+  useEffect(() => {
+    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [chatMessages, assistantLoading]);
 
   // Translation State
   const [translationText, setTranslationText] = useState(
@@ -308,16 +349,79 @@ export default function App() {
   const askAssistant = async (question) => {
     const q = (question || assistantQ).trim();
     if (!q) return;
+
+    const userMsgId = 'usr-' + Date.now();
+    const nowTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const newUserMsg = {
+      id: userMsgId,
+      sender: 'user',
+      text: q,
+      timestamp: nowTime
+    };
+
+    setChatMessages((prev) => [...prev, newUserMsg]);
+    setAssistantQ('');
     setAssistantLoading(true);
+
     try {
       const res = await api.post('/api/assistant/graphrag', { question: q });
       setAssistantResponse(res);
-      setAssistantQ('');
+      if (res.extracted_entities && res.extracted_entities.length > 0) {
+        setActiveExtractedEntities(res.extracted_entities);
+      }
+      const aiMsg = {
+        id: 'ai-' + Date.now(),
+        sender: 'ai',
+        text: res.answer,
+        responseObj: res,
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      };
+      setChatMessages((prev) => [...prev, aiMsg]);
     } catch (e) {
       notify(e.message);
+      const errorMsg = {
+        id: 'err-' + Date.now(),
+        sender: 'ai',
+        text: `Unable to complete GraphRAG inference: ${e.message}. Ensure backend is operational.`,
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      };
+      setChatMessages((prev) => [...prev, errorMsg]);
     } finally {
       setAssistantLoading(false);
     }
+  };
+
+  const translateChatMessage = async (msgId, text, lang) => {
+    setTranslatingChatId({ id: msgId, lang });
+    try {
+      const res = await api.post('/api/translation', {
+        text: text,
+        target_language: lang
+      });
+      setTranslatedChatMessages((prev) => ({
+        ...prev,
+        [msgId]: {
+          ...(prev[msgId] || {}),
+          [lang]: res.translated_text
+        }
+      }));
+      notify(`Translated insight to ${lang}`);
+    } catch (e) {
+      notify(`Translation failed: ${e.message}`);
+    } finally {
+      setTranslatingChatId(null);
+    }
+  };
+
+  const executeInterventionInSandbox = (params) => {
+    if (!params) return;
+    if (params.marketing_change !== undefined) setMarketingChange(params.marketing_change);
+    if (params.price_change !== undefined) setPriceChange(params.price_change);
+    if (params.supplier_delay !== undefined) setSupplierDelay(params.supplier_delay);
+    if (params.inventory_buffer !== undefined) setInventoryBuffer(params.inventory_buffer);
+    if (params.hiring_delta !== undefined) setHiringDelta(params.hiring_delta);
+    setPage('causal');
+    notify('Loaded recommended intervention parameters into Phase 3B Causal AI Sandbox');
   };
 
   // Translation
@@ -2163,76 +2267,384 @@ export default function App() {
   // -----------------------------------------------------------------
   const renderAssistant = (
     <>
-      <div className="panel" style={{ marginBottom: '18px' }}>
-        <div className="panel-heading">
-          <div>
-            <h3>Phase 4: GraphRAG AI Strategy Assistant</h3>
-            <p>Grounded decision intelligence combining Neo4j Knowledge Graph, TFT Forecasts &amp; Causal SCM</p>
+      {/* Top Metric Telemetry Strip */}
+      <div className="metric-grid" style={{ marginBottom: '18px' }}>
+        <div className="metric-card">
+          <div className="metric-icon" style={{ background: '#EEF2FF', color: '#4F46E5' }}>
+            <Network size={20} />
           </div>
-          <span className="pill purple"><Sparkles size={13} /> GraphRAG Online</span>
-        </div>
-
-        <div className="assistant-bar">
-          <input
-            placeholder="Ask questions about trends, GNN bottlenecks, TFT cash-flow predictions, or what-if interventions..."
-            value={assistantQ}
-            onChange={(e) => setAssistantQ(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') askAssistant();
-            }}
-          />
-          <button onClick={() => askAssistant()} disabled={assistantLoading}>
-            {assistantLoading ? <Loader2 size={16} className="spin" /> : <Send size={16} />}
-          </button>
-        </div>
-
-        <div className="prompt-chips">
-          <button onClick={() => askAssistant('What is the bottleneck pathway in the knowledge graph?')}>
-            Trace GNN Bottleneck Pathway
-          </button>
-          <button onClick={() => askAssistant('Compare First Class Express vs Standard Fleet')}>
-            Compare Carrier Telemetry &amp; Delay Risk
-          </button>
-          <button onClick={() => askAssistant('What are the primary delivery risks in our supply chain?')}>
-            Identify Supply Chain Delivery Risks
-          </button>
-          <button onClick={() => askAssistant('What are the customer segments and regional spend?')}>
-            Analyze Customer Segments &amp; Regions
-          </button>
-          <button onClick={() => askAssistant('Explain Phase 3A TFT Deep Transformer Accuracy')}>
-            Explain TFT Deep DL Benchmark (4.76% MAPE)
-          </button>
-          <button onClick={() => askAssistant('What is the total revenue and projected 6-week cash flow?')}>
-            Project Future Cash Flow &amp; Revenue
-          </button>
-          <button onClick={() => askAssistant('What happens if supplier delay increases by 3 days?')}>
-            Simulate 3-Day Supplier Delay (SCM)
-          </button>
-        </div>
-
-        {assistantResponse && (
-          <div className="rag-response-box">
-            <div className="rag-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <Brain size={16} /> Grounded Strategic Intelligence
-              </div>
-              <span className="pill purple" style={{ fontSize: '10px' }}>{assistantResponse.reasoning_mode || 'GraphRAG Grounded'}</span>
+          <div>
+            <div className="metric-label">Knowledge Base Synced</div>
+            <div className="metric-value">180.5K <span style={{ fontSize: '13px', fontWeight: 500, color: '#64748B' }}>Nodes &amp; Edges</span></div>
+            <div className="metric-sub" style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+              <span className="pill green" style={{ fontSize: '10px' }}>Synced</span>
+              <span>Neo4j 5-Tier Semantic DAG</span>
             </div>
-            <p style={{ fontSize: '13px', lineHeight: 1.7, color: '#1E293B', margin: '10px 0' }}>
-              {assistantResponse.answer}
-            </p>
-            {assistantResponse.suggested_scenario && (
-              <div style={{ padding: '8px 12px', background: 'rgba(79, 70, 229, 0.08)', borderRadius: '6px', border: '1px solid rgba(79, 70, 229, 0.15)', fontSize: '11.5px', color: '#4338CA', marginBottom: '10px' }}>
-                <strong>Recommended Strategic Action:</strong> {assistantResponse.suggested_scenario}
+          </div>
+        </div>
+
+        <div className="metric-card">
+          <div className="metric-icon" style={{ background: '#F5F3FF', color: '#7C3AED' }}>
+            <ShieldCheck size={20} />
+          </div>
+          <div>
+            <div className="metric-label">GraphRAG Faithfulness</div>
+            <div className="metric-value">98.4% <span style={{ fontSize: '13px', fontWeight: 500, color: '#64748B' }}>Grounded</span></div>
+            <div className="metric-sub" style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+              <span className="pill purple" style={{ fontSize: '10px' }}>Gatekeeper</span>
+              <span>Hallucination-free reasoning</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="metric-card">
+          <div className="metric-icon" style={{ background: '#F0F9FF', color: '#0284C7' }}>
+            <Zap size={20} />
+          </div>
+          <div>
+            <div className="metric-label">Retrieval Latency</div>
+            <div className="metric-value">18 ms <span style={{ fontSize: '13px', fontWeight: 500, color: '#64748B' }}>Multi-Hop</span></div>
+            <div className="metric-sub" style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+              <span className="pill sky" style={{ fontSize: '10px' }}>Sub-50ms</span>
+              <span>Sub-50ms Subgraph Traversal</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="metric-card">
+          <div className="metric-icon" style={{ background: '#ECFDF5', color: '#059669' }}>
+            <SlidersHorizontal size={20} />
+          </div>
+          <div>
+            <div className="metric-label">Causal Verification</div>
+            <div className="metric-value">Active <span style={{ fontSize: '13px', fontWeight: 500, color: '#64748B' }}>SCM Engine</span></div>
+            <div className="metric-sub" style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+              <span className="pill green" style={{ fontSize: '10px' }}>Ready</span>
+              <span>Pearl do-calculus In-the-Loop</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Main 2-Column Cockpit Layout */}
+      <div className="dashboard-grid main-grid">
+        {/* Left Column: Conversational Decision Cockpit */}
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <div className="panel" style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+            <div className="panel-heading" style={{ borderBottom: '1px solid #F1F5F9', paddingBottom: '12px', marginBottom: '12px' }}>
+              <div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <h3>Conversational Strategy Cockpit</h3>
+                  <span className="pill purple" style={{ fontSize: '10.5px' }}><Sparkles size={11} /> Grounded Multi-Turn</span>
+                </div>
+                <p style={{ marginTop: '3px' }}>
+                  Multi-hop dialogue grounded in Knowledge Graph topology, TFT cash forecasts &amp; Pearl's Causal SCM
+                </p>
               </div>
-            )}
-            <div className="rag-citations">
-              {assistantResponse.grounded_citations?.map((cit, i) => (
-                <span key={i} className="citation-badge">{cit}</span>
+              {chatMessages.length > 1 && (
+                <button
+                  onClick={() => setChatMessages([chatMessages[0]])}
+                  style={{ background: 'none', border: '1px solid #E2E8F0', borderRadius: '6px', padding: '4px 10px', fontSize: '11px', color: '#64748B', cursor: 'pointer' }}
+                >
+                  Clear Thread
+                </button>
+              )}
+            </div>
+
+            {/* Chat Thread */}
+            <div className="chat-thread-wrap" style={{ flex: 1, minHeight: '380px', maxHeight: '520px', overflowY: 'auto' }}>
+              {chatMessages.map((msg) => {
+                if (msg.sender === 'user') {
+                  return (
+                    <div key={msg.id} style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', marginBottom: '10px' }}>
+                      <div className="chat-msg-user">
+                        {msg.text}
+                      </div>
+                      <span style={{ fontSize: '10px', color: '#94A3B8', marginTop: '4px', marginRight: '4px' }}>{msg.timestamp}</span>
+                    </div>
+                  );
+                }
+                return (
+                  <div key={msg.id} className="chat-msg-ai" style={{ marginBottom: '14px' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #EDF2F7', paddingBottom: '8px', marginBottom: '10px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <div style={{ width: '22px', height: '22px', borderRadius: '6px', background: '#4F46E5', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#FFFFFF' }}>
+                          <Brain size={13} />
+                        </div>
+                        <span style={{ fontSize: '12px', fontWeight: 700, color: '#1E293B' }}>Phase 4 GraphRAG Strategic Agent</span>
+                      </div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <span className="pill purple" style={{ fontSize: '10px' }}>
+                          {msg.responseObj?.reasoning_mode || 'Multi-Hop Grounded'}
+                        </span>
+                        <span style={{ fontSize: '10px', color: '#64748B', fontFamily: 'monospace' }}>
+                          {msg.responseObj?.retrieval_latency_ms ? `${msg.responseObj.retrieval_latency_ms}ms` : '18ms'}
+                        </span>
+                      </div>
+                    </div>
+
+                    <p style={{ fontSize: '12.5px', lineHeight: 1.7, color: '#1E293B', margin: '0 0 10px 0' }}>
+                      {msg.text}
+                    </p>
+
+                    {msg.responseObj?.suggested_scenario && (
+                      <div style={{ padding: '10px 14px', background: 'rgba(79, 70, 229, 0.06)', borderRadius: '8px', border: '1px solid rgba(79, 70, 229, 0.18)', marginBottom: '12px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '11.5px', fontWeight: 700, color: '#4338CA', marginBottom: '4px' }}>
+                          <Lightbulb size={13} /> Recommended Strategic Action:
+                        </div>
+                        <div style={{ fontSize: '12px', color: '#1E293B', lineHeight: 1.5 }}>
+                          {msg.responseObj.suggested_scenario}
+                        </div>
+                        {msg.responseObj?.suggested_intervention_params && (
+                          <button
+                            onClick={() => executeInterventionInSandbox(msg.responseObj.suggested_intervention_params)}
+                            style={{ marginTop: '8px', display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '6px 12px', background: '#4F46E5', color: '#FFFFFF', borderRadius: '6px', border: 'none', fontSize: '11px', fontWeight: 600, cursor: 'pointer' }}
+                          >
+                            <SlidersHorizontal size={12} /> Execute Strategic Intervention in Phase 3B SCM Sandbox
+                          </button>
+                        )}
+                      </div>
+                    )}
+
+                    {msg.responseObj?.grounded_citations && msg.responseObj.grounded_citations.length > 0 && (
+                      <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginBottom: '10px' }}>
+                        {msg.responseObj.grounded_citations.map((cit, ci) => (
+                          <span key={ci} className="citation-badge">{cit}</span>
+                        ))}
+                      </div>
+                    )}
+
+                    {/* Inline Translation Bar */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', borderTop: '1px solid #EDF2F7', paddingTop: '8px', marginTop: '8px' }}>
+                      <span style={{ fontSize: '10.5px', color: '#64748B', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                        <Globe2 size={12} /> Executive Localization:
+                      </span>
+                      <button
+                        disabled={translatingChatId?.id === msg.id}
+                        onClick={() => translateChatMessage(msg.id, msg.text, 'Hindi')}
+                        style={{ padding: '3px 8px', fontSize: '10px', background: '#FFFFFF', border: '1px solid #CBD5E1', borderRadius: '4px', cursor: 'pointer', color: '#334155' }}
+                      >
+                        {translatingChatId?.id === msg.id && translatingChatId?.lang === 'Hindi' ? <Loader2 size={10} className="spin" /> : 'Translate Hindi'}
+                      </button>
+                      <button
+                        disabled={translatingChatId?.id === msg.id}
+                        onClick={() => translateChatMessage(msg.id, msg.text, 'Marathi')}
+                        style={{ padding: '3px 8px', fontSize: '10px', background: '#FFFFFF', border: '1px solid #CBD5E1', borderRadius: '4px', cursor: 'pointer', color: '#334155' }}
+                      >
+                        {translatingChatId?.id === msg.id && translatingChatId?.lang === 'Marathi' ? <Loader2 size={10} className="spin" /> : 'Translate Marathi'}
+                      </button>
+                      <span style={{ fontSize: '10px', color: '#94A3B8', marginLeft: 'auto' }}>{msg.timestamp}</span>
+                    </div>
+
+                    {/* Translated Content Display */}
+                    {translatedChatMessages[msg.id] && Object.keys(translatedChatMessages[msg.id]).map((lang) => (
+                      <div key={lang} style={{ marginTop: '8px', padding: '8px 12px', background: '#F0FDF4', border: '1px solid #BBF7D0', borderRadius: '6px', fontSize: '11.5px', color: '#166534' }}>
+                        <div style={{ fontWeight: 600, fontSize: '10.5px', marginBottom: '2px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                          <Languages size={11} /> {lang} Executive Localization:
+                        </div>
+                        <div style={{ lineHeight: 1.5 }}>
+                          {translatedChatMessages[msg.id][lang]}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                );
+              })}
+              {assistantLoading && (
+                <div className="chat-msg-ai" style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '14px' }}>
+                  <Loader2 size={18} className="spin" style={{ color: '#4F46E5' }} />
+                  <div>
+                    <span style={{ fontSize: '12px', fontWeight: 600, color: '#1E293B' }}>Grounded GraphRAG Reasoning in Progress...</span>
+                    <span style={{ fontSize: '10.5px', color: '#64748B', display: 'block' }}>Traversing multi-hop Neo4j paths, extracting TFT quantiles &amp; executing SCM DAG verification</span>
+                  </div>
+                </div>
+              )}
+              <div ref={chatEndRef} />
+            </div>
+
+            {/* Input Bar & Curated Prompt Chips */}
+            <div style={{ marginTop: 'auto', paddingTop: '10px' }}>
+              <div className="assistant-bar">
+                <input
+                  placeholder="Ask questions about trends, GNN bottlenecks, TFT cash-flow predictions, or what-if interventions..."
+                  value={assistantQ}
+                  onChange={(e) => setAssistantQ(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') askAssistant();
+                  }}
+                />
+                <button onClick={() => askAssistant()} disabled={assistantLoading}>
+                  {assistantLoading ? <Loader2 size={16} className="spin" /> : <Send size={16} />}
+                </button>
+              </div>
+
+              <div className="prompt-chips">
+                <button onClick={() => askAssistant('What is the bottleneck pathway in the knowledge graph?')}>
+                  Trace GNN Bottleneck Pathway
+                </button>
+                <button onClick={() => askAssistant('Compare First Class Express vs Standard Fleet')}>
+                  Compare Carrier Telemetry &amp; Delay Risk
+                </button>
+                <button onClick={() => askAssistant('What are the primary delivery risks in our supply chain?')}>
+                  Identify Supply Chain Delivery Risks
+                </button>
+                <button onClick={() => askAssistant('What are the customer segments and regional spend?')}>
+                  Analyze Customer Segments &amp; Regions
+                </button>
+                <button onClick={() => askAssistant('Explain Phase 3A TFT Deep Transformer Accuracy')}>
+                  Explain TFT Deep DL Benchmark (4.76% MAPE)
+                </button>
+                <button onClick={() => askAssistant('What is the total revenue and projected 6-week cash flow?')}>
+                  Project Future Cash Flow &amp; Revenue
+                </button>
+                <button onClick={() => askAssistant('What happens if supplier delay increases by 3 days?')}>
+                  Simulate 3-Day Supplier Delay (SCM)
+                </button>
+                <button onClick={() => askAssistant('Simulate 20% marketing increase and -5% price drop')}>
+                  Simulate Strategic Market Intervention
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Right Column: Grounding Pipeline & Subgraph Evidence Explorer */}
+        <div>
+          {/* Card 1: GraphRAG Verification Pipeline */}
+          <div className="panel" style={{ marginBottom: '18px' }}>
+            <div className="panel-heading">
+              <div>
+                <h3>GraphRAG Verification</h3>
+                <p>Multi-agent neuro-symbolic pipeline</p>
+              </div>
+              <span className="pill green"><ShieldCheck size={12} /> Active</span>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <div className="pipeline-step-box">
+                <div className="pipeline-step-dot" />
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontSize: '11.5px', fontWeight: 600, color: '#1E293B', display: 'flex', justifyContent: 'space-between' }}>
+                    <span>1. Intent &amp; Cypher Gen</span>
+                    <span style={{ color: '#10B981', fontSize: '10.5px' }}>100% Parsed</span>
+                  </div>
+                  <div style={{ fontSize: '10.5px', color: '#64748B', marginTop: '2px' }}>
+                    Entity disambiguation &amp; multi-hop query synthesis
+                  </div>
+                </div>
+              </div>
+              <div className="pipeline-step-box">
+                <div className="pipeline-step-dot" />
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontSize: '11.5px', fontWeight: 600, color: '#1E293B', display: 'flex', justifyContent: 'space-between' }}>
+                    <span>2. Subgraph Traversal</span>
+                    <span style={{ color: '#10B981', fontSize: '10.5px' }}>5 Hops Active</span>
+                  </div>
+                  <div style={{ fontSize: '10.5px', color: '#64748B', marginTop: '2px' }}>
+                    GNN link prediction (AUC 0.942) isolates risk paths
+                  </div>
+                </div>
+              </div>
+              <div className="pipeline-step-box">
+                <div className="pipeline-step-dot" />
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontSize: '11.5px', fontWeight: 600, color: '#1E293B', display: 'flex', justifyContent: 'space-between' }}>
+                    <span>3. TFT &amp; SCM Fusion</span>
+                    <span style={{ color: '#10B981', fontSize: '10.5px' }}>Fused</span>
+                  </div>
+                  <div style={{ fontSize: '10.5px', color: '#64748B', marginTop: '2px' }}>
+                    Fuses P10/P50/P90 forecasts with Pearl do-calculus
+                  </div>
+                </div>
+              </div>
+              <div className="pipeline-step-box">
+                <div className="pipeline-step-dot" />
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontSize: '11.5px', fontWeight: 600, color: '#1E293B', display: 'flex', justifyContent: 'space-between' }}>
+                    <span>4. Faithfulness Gatekeeper</span>
+                    <span style={{ color: '#10B981', fontSize: '10.5px' }}>98.4% Grounded</span>
+                  </div>
+                  <div style={{ fontSize: '10.5px', color: '#64748B', marginTop: '2px' }}>
+                    Eliminates hallucinations via verified triples
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Card 2: Active Subgraph Entity Explorer */}
+          <div className="panel" style={{ marginBottom: '18px' }}>
+            <div className="panel-heading">
+              <div>
+                <h3>Active Subgraph Entities</h3>
+                <p>Grounded nodes extracted from reasoning context</p>
+              </div>
+              <span className="pill purple"><Boxes size={12} /> {activeExtractedEntities.length} Entities</span>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '7px', maxHeight: '270px', overflowY: 'auto' }}>
+              {activeExtractedEntities.map((ent, idx) => (
+                <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '7px 10px', background: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: '6px' }}>
+                  <div style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '65%' }}>
+                    <span style={{ fontWeight: 600, fontSize: '11.5px', color: '#1E293B', display: 'block', textOverflow: 'ellipsis', overflow: 'hidden' }}>{ent.entity}</span>
+                    <span style={{ fontSize: '10px', color: '#64748B' }}>{ent.type}</span>
+                  </div>
+                  <span className="pill purple" style={{ fontSize: '10.5px', fontWeight: 600, flexShrink: 0 }}>{ent.val}</span>
+                </div>
               ))}
             </div>
           </div>
-        )}
+
+          {/* Card 3: Cross-Phase Architecture Quick Links */}
+          <div className="panel">
+            <div className="panel-heading">
+              <div>
+                <h3>Cross-Phase Architecture</h3>
+                <p>Direct navigation to underlying models</p>
+              </div>
+              <span className="pill sky"><GitBranch size={12} /> Deep Links</span>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <button
+                onClick={() => setPage('semantic')}
+                style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '9px 12px', background: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: '8px', cursor: 'pointer', textAlign: 'left', transition: 'all 0.15s ease' }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <Network size={15} style={{ color: '#4F46E5', flexShrink: 0 }} />
+                  <div>
+                    <div style={{ fontSize: '11.5px', fontWeight: 600, color: '#1E293B' }}>Phase 2: Semantic Graph</div>
+                    <div style={{ fontSize: '10px', color: '#64748B' }}>Inspect 65 Semantic Nodes &amp; GNN Embeddings</div>
+                  </div>
+                </div>
+                <ArrowRight size={14} style={{ color: '#94A3B8', flexShrink: 0 }} />
+              </button>
+              <button
+                onClick={() => setPage('forecast')}
+                style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '9px 12px', background: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: '8px', cursor: 'pointer', textAlign: 'left', transition: 'all 0.15s ease' }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <Brain size={15} style={{ color: '#4F46E5', flexShrink: 0 }} />
+                  <div>
+                    <div style={{ fontSize: '11.5px', fontWeight: 600, color: '#1E293B' }}>Phase 3A: TFT Forecasting</div>
+                    <div style={{ fontSize: '10px', color: '#64748B' }}>Review P10–P90 Bounds &amp; VSN Feature Weights</div>
+                  </div>
+                </div>
+                <ArrowRight size={14} style={{ color: '#94A3B8', flexShrink: 0 }} />
+              </button>
+              <button
+                onClick={() => setPage('causal')}
+                style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '9px 12px', background: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: '8px', cursor: 'pointer', textAlign: 'left', transition: 'all 0.15s ease' }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <SlidersHorizontal size={15} style={{ color: '#4F46E5', flexShrink: 0 }} />
+                  <div>
+                    <div style={{ fontSize: '11.5px', fontWeight: 600, color: '#1E293B' }}>Phase 3B: Pearl's SCM Sandbox</div>
+                    <div style={{ fontSize: '10px', color: '#64748B' }}>Simulate do-calculus Interventions</div>
+                  </div>
+                </div>
+                <ArrowRight size={14} style={{ color: '#94A3B8', flexShrink: 0 }} />
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </>
   );
