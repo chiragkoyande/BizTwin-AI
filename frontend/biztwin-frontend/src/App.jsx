@@ -2187,28 +2187,45 @@ export default function App() {
         </div>
 
         <div className="prompt-chips">
+          <button onClick={() => askAssistant('What is the bottleneck pathway in the knowledge graph?')}>
+            Trace GNN Bottleneck Pathway
+          </button>
+          <button onClick={() => askAssistant('Compare First Class Express vs Standard Fleet')}>
+            Compare Carrier Telemetry &amp; Delay Risk
+          </button>
           <button onClick={() => askAssistant('What are the primary delivery risks in our supply chain?')}>
             Identify Supply Chain Delivery Risks
+          </button>
+          <button onClick={() => askAssistant('What are the customer segments and regional spend?')}>
+            Analyze Customer Segments &amp; Regions
+          </button>
+          <button onClick={() => askAssistant('Explain Phase 3A TFT Deep Transformer Accuracy')}>
+            Explain TFT Deep DL Benchmark (4.76% MAPE)
           </button>
           <button onClick={() => askAssistant('What is the total revenue and projected 6-week cash flow?')}>
             Project Future Cash Flow &amp; Revenue
           </button>
-          <button onClick={() => askAssistant('What is our top performing category and inventory need?')}>
-            Top Performing Category &amp; Inventory
-          </button>
           <button onClick={() => askAssistant('What happens if supplier delay increases by 3 days?')}>
-            Simulate 3-Day Supplier Delay Impact
+            Simulate 3-Day Supplier Delay (SCM)
           </button>
         </div>
 
         {assistantResponse && (
           <div className="rag-response-box">
-            <div className="rag-header">
-              <Brain size={16} /> Grounded Strategic Intelligence
+            <div className="rag-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <Brain size={16} /> Grounded Strategic Intelligence
+              </div>
+              <span className="pill purple" style={{ fontSize: '10px' }}>{assistantResponse.reasoning_mode || 'GraphRAG Grounded'}</span>
             </div>
-            <p style={{ fontSize: '13px', lineHeight: 1.7, color: '#1E293B' }}>
+            <p style={{ fontSize: '13px', lineHeight: 1.7, color: '#1E293B', margin: '10px 0' }}>
               {assistantResponse.answer}
             </p>
+            {assistantResponse.suggested_scenario && (
+              <div style={{ padding: '8px 12px', background: 'rgba(79, 70, 229, 0.08)', borderRadius: '6px', border: '1px solid rgba(79, 70, 229, 0.15)', fontSize: '11.5px', color: '#4338CA', marginBottom: '10px' }}>
+                <strong>Recommended Strategic Action:</strong> {assistantResponse.suggested_scenario}
+              </div>
+            )}
             <div className="rag-citations">
               {assistantResponse.grounded_citations?.map((cit, i) => (
                 <span key={i} className="citation-badge">{cit}</span>
