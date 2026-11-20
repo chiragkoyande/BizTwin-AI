@@ -756,6 +756,43 @@ h1 {
 .legend-dot.rose { background: #F43F5E; }
 .legend-dot.sky { background: #0EA5E9; }
 
+/* Metric Switcher Segmented Pills */
+.metric-switcher {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #F1F5F9;
+  padding: 3px 4px;
+  border-radius: 7px;
+  border: 1px solid #E2E8F0;
+}
+
+.metric-pill-btn {
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 5px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: #64748B;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.metric-pill-btn:hover {
+  color: #0F172A;
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.metric-pill-btn.active {
+  background: #FFFFFF;
+  color: #4F46E5;
+  border-color: #E2E8F0;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+  font-weight: 700;
+}
+
 /* Subnav */
 .subnav {
   display: flex;
