@@ -203,17 +203,58 @@ Data Manager → **Reset to DataCo default**.
 ```text
 BizTwinAI/
 ├── DataCoSupplyChainDataset.csv     # default 96 MB dataset
+├── forecast_cache.json              # pre-computed TFT model quantiles & timeline
 ├── backend/
-│   ├── main.py                      # FastAPI app and all endpoints
+│   ├── main.py                      # FastAPI app entry point (clean router mounts, ~68 lines)
 │   ├── requirements.txt
-│   └── data/sample_sales.csv        # 72-row INR demo dataset
+│   ├── data/sample_sales.csv        # 72-row INR demo dataset
+│   └── app/                         # Senior-engineer modular backend architecture
+│       ├── core/config.py           # Paths, CORS, and platform settings
+│       ├── models/schemas.py        # Pydantic request & response schemas
+│       ├── services/                # Core domain business logic & ML algorithms
+│       │   ├── data_service.py      # Ingestion, normalization, caching & profiling
+│       │   ├── stream_service.py    # Phase 1: Real-time streaming buffer & background task
+│       │   ├── graph_service.py     # Phase 2: 5-Tier Semantic DAG & GNN link prediction
+│       │   ├── forecast_service.py  # Phase 3A: TFT multi-horizon forecasting & baselines
+│       │   ├── causal_service.py    # Phase 3B: Pearl's do-calculus SCM counterfactual engine
+│       │   ├── assistant_service.py # Phase 4: GraphRAG multi-hop grounded agent
+│       │   ├── translation_service.py # Multilingual executive localization & SMB glossary
+│       │   └── model_service.py     # Deep learning benchmark leaderboard metadata
+│       └── api/routers/             # Dedicated APIRouter modules
+│           ├── health.py            # System health & status endpoints
+│           ├── dashboard.py         # Executive dashboard metrics & platform activity
+│           ├── stream.py            # Phase 1 streaming controls & buffer
+│           ├── data.py              # Dataset upload, reset, and profile
+│           ├── graph.py             # Phase 2 semantic graph endpoints
+│           ├── forecast.py          # Phase 3A TFT & statistical forecast endpoints
+│           ├── causal.py            # Phase 3B Pearl do-calculus counterfactual endpoints
+│           ├── assistant.py         # Phase 4 GraphRAG AI strategy assistant endpoints
+│           ├── translation.py       # Executive translation & glossary endpoints
+│           └── models.py            # Model Lab benchmark leaderboard endpoints
 ├── frontend/biztwin-frontend/
-│   ├── src/App.jsx                  # all pages wired to the API
-│   ├── src/api.js                   # fetch wrapper / API base URL
-│   ├── src/format.js                # currency, month and CSV helpers
-│   └── src/styles.css               # existing design + live-state styles
-├── graph_builder.py                 # optional Neo4j loader (not used by the demo)
-└── dataco_ingestion.py              # separate unused ingestion app
+│   ├── src/App.jsx                  # Modular router & shell (~630 lines)
+│   ├── src/components/layout/       # Reusable layout components (Sidebar, Topbar)
+│   ├── src/constants/               # Curated navigation, graph topology, translation data
+│   ├── src/pages/                   # Dedicated modular view components (10 pages)
+│   │   ├── Dashboard/               # Executive dashboard with TFT cone & health score
+│   │   ├── Phase1Streaming/         # Ingestion stream table & pipeline specs
+│   │   ├── Phase2Semantic/          # Interactive 5-tier semantic DAG & GNN embeddings
+│   │   ├── Phase3AForecast/         # TFT multi-horizon forecast & VSN attention weights
+│   │   ├── Phase3BCausal/           # Pearl's do-calculus decision sandbox & SCM delta
+│   │   ├── Phase4Assistant/         # Grounded GraphRAG conversational cockpit & i18n
+│   │   ├── Translation/             # Multilingual localization workbench & glossary matrix
+│   │   ├── ModelLab/                # Deep learning benchmark leaderboard table
+│   │   ├── DataManagement/          # Dataset upload & schema validation
+│   │   └── Settings/                # Backend URL & deployment preferences
+│   ├── src/api.js                   # API client configuration
+│   ├── src/format.js                # Currency, numerical, and date formatters
+│   └── src/styles.css               # Global application design tokens & theme
+├── scripts/                         # Offline utilities & standalone runners
+│   ├── dataco_ingestion.py          # Phase 1 ingestion feeder
+│   └── graph_builder.py             # Neo4j knowledge graph builder
+├── docs/screenshots/                # Architecture & UI screenshots
+├── dataco_ingestion.py              # Backward-compatible root runner shim
+└── graph_builder.py                 # Backward-compatible root runner shim
 ```
 
 `graph_builder.py` reads Neo4j credentials from environment variables only. Never commit
