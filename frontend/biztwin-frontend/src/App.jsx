@@ -2268,60 +2268,52 @@ export default function App() {
   const renderAssistant = (
     <>
       {/* Top Metric Telemetry Strip */}
-      <div className="metric-grid" style={{ marginBottom: '18px' }}>
+      <div className="metric-grid">
         <div className="metric-card">
-          <div className="metric-icon" style={{ background: '#EEF2FF', color: '#4F46E5' }}>
-            <Network size={20} />
+          <div className="metric-top">
+            <span>Knowledge Base Synced</span>
+            <span className="metric-icon"><Network size={17} /></span>
           </div>
-          <div>
-            <div className="metric-label">Knowledge Base Synced</div>
-            <div className="metric-value">180.5K <span style={{ fontSize: '13px', fontWeight: 500, color: '#64748B' }}>Nodes &amp; Edges</span></div>
-            <div className="metric-sub" style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-              <span className="pill green" style={{ fontSize: '10px' }}>Synced</span>
-              <span>Neo4j 5-Tier Semantic DAG</span>
-            </div>
+          <strong>180.5K</strong>
+          <div className="metric-bottom">
+            <span className="positive"><Check size={14} />65 Nodes Synced</span>
+            <span className="muted">Neo4j 5-Tier DAG</span>
           </div>
         </div>
 
         <div className="metric-card">
-          <div className="metric-icon" style={{ background: '#F5F3FF', color: '#7C3AED' }}>
-            <ShieldCheck size={20} />
+          <div className="metric-top">
+            <span>GraphRAG Faithfulness</span>
+            <span className="metric-icon sky"><ShieldCheck size={17} /></span>
           </div>
-          <div>
-            <div className="metric-label">GraphRAG Faithfulness</div>
-            <div className="metric-value">98.4% <span style={{ fontSize: '13px', fontWeight: 500, color: '#64748B' }}>Grounded</span></div>
-            <div className="metric-sub" style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-              <span className="pill purple" style={{ fontSize: '10px' }}>Gatekeeper</span>
-              <span>Hallucination-free reasoning</span>
-            </div>
+          <strong>98.4%</strong>
+          <div className="metric-bottom">
+            <span className="positive"><Check size={14} />Grounded</span>
+            <span className="muted">hallucination gatekeeper</span>
           </div>
         </div>
 
         <div className="metric-card">
-          <div className="metric-icon" style={{ background: '#F0F9FF', color: '#0284C7' }}>
-            <Zap size={20} />
+          <div className="metric-top">
+            <span>Multi-Hop Retrieval Latency</span>
+            <span className="metric-icon emerald"><Zap size={17} /></span>
           </div>
-          <div>
-            <div className="metric-label">Retrieval Latency</div>
-            <div className="metric-value">18 ms <span style={{ fontSize: '13px', fontWeight: 500, color: '#64748B' }}>Multi-Hop</span></div>
-            <div className="metric-sub" style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-              <span className="pill sky" style={{ fontSize: '10px' }}>Sub-50ms</span>
-              <span>Sub-50ms Subgraph Traversal</span>
-            </div>
+          <strong>18 ms</strong>
+          <div className="metric-bottom">
+            <span className="positive"><ArrowUpRight size={14} />Sub-50ms</span>
+            <span className="muted">subgraph traversal</span>
           </div>
         </div>
 
         <div className="metric-card">
-          <div className="metric-icon" style={{ background: '#ECFDF5', color: '#059669' }}>
-            <SlidersHorizontal size={20} />
+          <div className="metric-top">
+            <span>Causal SCM Verification</span>
+            <span className="metric-icon amber"><SlidersHorizontal size={17} /></span>
           </div>
-          <div>
-            <div className="metric-label">Causal Verification</div>
-            <div className="metric-value">Active <span style={{ fontSize: '13px', fontWeight: 500, color: '#64748B' }}>SCM Engine</span></div>
-            <div className="metric-sub" style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-              <span className="pill green" style={{ fontSize: '10px' }}>Ready</span>
-              <span>Pearl do-calculus In-the-Loop</span>
-            </div>
+          <strong>Active</strong>
+          <div className="metric-bottom">
+            <span className="positive"><Check size={14} />Ready</span>
+            <span className="muted">Pearl do-calculus loop</span>
           </div>
         </div>
       </div>
