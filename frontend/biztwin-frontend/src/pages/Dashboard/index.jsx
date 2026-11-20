@@ -524,7 +524,7 @@ export default function DashboardPage({
                   <strong style={{ fontSize: '12px', display: 'block' }}>{ev.title}</strong>
                   <span style={{ fontSize: '11px', color: '#64748B' }}>{ev.detail}</span>
                 </div>
-                <span className="pill success">{ev.module || String(ev.phase || '').replace(/Phase \d+[AB]?:?\s*/i, '') || 'Live'}</span>
+                <span className="pill success">{ev.module || 'Live'}</span>
               </div>
             ))}
           </div>
