@@ -1,0 +1,17 @@
+.venv/
+__pycache__/
+*.pyc
+node_modules
+node_modules/
+dist/
+dist
+backend/data/active_dataset.csv
+backend/data/active_meta.json
+backend/data/cache/
+.env
+*.log
+biztwin_*.png
+*_crop.png
+heterogeneous_graph_crop.png
+proper_sidebar_crop.png
+sidebar_crop.png
