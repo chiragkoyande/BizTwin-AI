@@ -2,7 +2,7 @@ import React from 'react';
 import { Play, Square } from 'lucide-react';
 import { number } from '../../format';
 
-export default function Phase1StreamingPage({
+export default function StreamingPage({
   streamingActive,
   toggleStreaming,
   streamStats,
@@ -30,7 +30,7 @@ export default function Phase1StreamingPage({
         <div className="panel">
           <div className="panel-heading">
             <div>
-              <h3>Phase 1: Real-Time Multi-Modal Data Ingestion</h3>
+              <h3>Real-Time Multi-Modal Data Ingestion</h3>
               <p>FastAPI asynchronous streaming worker ingesting DataCo supply chain transactions</p>
             </div>
             <div style={{ display: 'flex', gap: '8px' }}>

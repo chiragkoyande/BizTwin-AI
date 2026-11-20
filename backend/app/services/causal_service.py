@@ -51,7 +51,7 @@ def evaluate_causal_counterfactual(s: ScenarioInput) -> dict:
     ]
 
     return {
-        "engine": "Phase 3B: Pearl's Do-Calculus Structural Causal Model (SCM)",
+        "engine": "Pearl's Do-Calculus Structural Causal Model (SCM)",
         "intervention": {
             "do_marketing": f"+{s.marketing_change_pct}%",
             "do_price": f"{s.price_change_pct}%",

@@ -108,7 +108,7 @@ export const TFT_VARIABLE_IMPORTANCE = [
   { feature: 'Regional Hub Coordinates', category: 'Spatial Covariates', weight: 0.04, color: '#64748B', desc: 'Geographic transit distance to western delivery hubs' },
 ];
 
-export default function Phase3AForecastPage({
+export default function ForecastPage({
   tftTarget,
   setTftTarget,
   tftData,
@@ -302,7 +302,7 @@ export default function Phase3AForecastPage({
           <div className="panel-heading" style={{ flexWrap: 'wrap', gap: '8px' }}>
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <h3>Phase 3A: Temporal Fusion Transformer (TFT) Multi-Horizon Forecast</h3>
+                <h3>Temporal Fusion Transformer (TFT) Multi-Horizon Forecast</h3>
                 <span className="pill purple" style={{ fontSize: '10.5px' }}>{currentTftMeta.badge}</span>
               </div>
               <p style={{ marginTop: '3px' }}>

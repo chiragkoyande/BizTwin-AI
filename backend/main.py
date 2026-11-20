@@ -1,14 +1,15 @@
 """BizTwin AI Enterprise Digital Twin Platform - Backend API.
 
-Implements the 4-Phase Architecture defined in:
+Implements the Enterprise Architecture defined in:
 "AI-Powered Digital Twins for Small Businesses: Enterprise-Scale Digital Twin
 Platform for Small Businesses Using Multi-Modal Graph Neural Networks and Counterfactual AI"
 
-Phase 1: Multi-Modal Ingestion Pipeline (DataCo Supply Chain & Streaming Engine)
-Phase 2: Semantic Business Graph & Graph Neural Network (GNN) Engine
-Phase 3A: Deep Learning Multi-Horizon Forecasting Engine (Temporal Fusion Transformer / TFT)
-Phase 3B: Causal AI Engine & Counterfactual Simulation (Pearl's Do-Calculus & DAG)
-Phase 4: GraphRAG AI Strategy Assistant & Multilingual Executive Localization
+Core Modules:
+- Ingestion Stream: Multi-Modal Ingestion Pipeline (DataCo Supply Chain & Streaming Engine)
+- Semantic Graph: Semantic Business Graph & Graph Neural Network (GNN) Engine
+- Forecasting: Deep Learning Multi-Horizon Forecasting Engine (Temporal Fusion Transformer / TFT)
+- Causal AI: Causal AI Engine & Counterfactual Simulation (Pearl's Do-Calculus & DAG)
+- Strategic Agent: GraphRAG AI Strategy Assistant & Multilingual Executive Localization
 """
 from __future__ import annotations
 

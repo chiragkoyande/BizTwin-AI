@@ -243,7 +243,7 @@ export default function DashboardPage({
           <div className="panel-heading" style={{ alignItems: 'center', marginBottom: '8px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <h3 style={{ margin: 0 }}>{currentMetricConfig.title}</h3>
-              <span className="pill purple" style={{ fontSize: '10px', padding: '2px 7px' }}>Phase 3A TFT Synced</span>
+              <span className="pill purple" style={{ fontSize: '10px', padding: '2px 7px' }}>TFT Multi-Horizon Synced</span>
             </div>
             {/* Metric Switcher Segmented Pills */}
             <div className="metric-switcher">
@@ -420,11 +420,11 @@ export default function DashboardPage({
               </div>
             </div>
 
-            {/* 5-Phase Architectural Telemetry */}
+            {/* Architectural Telemetry */}
             <div style={{ display: 'flex', flexDirection: 'column' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px 0', borderBottom: '1px solid #F1F5F9', fontSize: '11.5px' }}>
                 <div>
-                  <strong style={{ color: '#1E293B', display: 'block', fontSize: '11.5px' }}>Phase 1: Streaming Ingestion</strong>
+                  <strong style={{ color: '#1E293B', display: 'block', fontSize: '11.5px' }}>Streaming Data Ingestion</strong>
                   <span style={{ fontSize: '10px', color: '#94A3B8' }}>180.5K DataCo records active</span>
                 </div>
                 <span className="pill success">Operational</span>
@@ -432,7 +432,7 @@ export default function DashboardPage({
 
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px 0', borderBottom: '1px solid #F1F5F9', fontSize: '11.5px' }}>
                 <div>
-                  <strong style={{ color: '#1E293B', display: 'block', fontSize: '11.5px' }}>Phase 2: GNN Knowledge Graph</strong>
+                  <strong style={{ color: '#1E293B', display: 'block', fontSize: '11.5px' }}>Semantic Knowledge Graph</strong>
                   <span style={{ fontSize: '10px', color: '#94A3B8' }}>18 Entities · AUC 0.942 Synced</span>
                 </div>
                 <span className="pill sky">18 Nodes Synced</span>
@@ -440,7 +440,7 @@ export default function DashboardPage({
 
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px 0', borderBottom: '1px solid #F1F5F9', fontSize: '11.5px' }}>
                 <div>
-                  <strong style={{ color: '#1E293B', display: 'block', fontSize: '11.5px' }}>Phase 3A: TFT Forecasting</strong>
+                  <strong style={{ color: '#1E293B', display: 'block', fontSize: '11.5px' }}>TFT Multi-Horizon Forecasting</strong>
                   <span style={{ fontSize: '10px', color: '#94A3B8' }}>P10, P50, P90 Multi-Horizon</span>
                 </div>
                 <span className="pill purple">Quantiles Active</span>
@@ -448,7 +448,7 @@ export default function DashboardPage({
 
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px 0', borderBottom: '1px solid #F1F5F9', fontSize: '11.5px' }}>
                 <div>
-                  <strong style={{ color: '#1E293B', display: 'block', fontSize: '11.5px' }}>Phase 3B: Pearl's SCM Sandbox</strong>
+                  <strong style={{ color: '#1E293B', display: 'block', fontSize: '11.5px' }}>Pearl's Causal SCM Sandbox</strong>
                   <span style={{ fontSize: '10px', color: '#94A3B8' }}>Do-Calculus Counterfactuals</span>
                 </div>
                 <span className="pill emerald">Do-Calculus Live</span>
@@ -456,8 +456,8 @@ export default function DashboardPage({
 
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px 0', fontSize: '11.5px' }}>
                 <div>
-                  <strong style={{ color: '#1E293B', display: 'block', fontSize: '11.5px' }}>Phase 4: GraphRAG Strategy AI</strong>
-                  <span style={{ fontSize: '10px', color: '#94A3B8' }}>LLM Grounded Advisory</span>
+                  <strong style={{ color: '#1E293B', display: 'block', fontSize: '11.5px' }}>GraphRAG Strategic Agent</strong>
+                  <span style={{ fontSize: '10px', color: '#94A3B8' }}>Grounded Advisory Cockpit</span>
                 </div>
                 <span className="pill indigo">Agent Active</span>
               </div>
@@ -513,7 +513,7 @@ export default function DashboardPage({
           <div className="panel-heading">
             <div>
               <h3>Digital Twin Event Timeline</h3>
-              <p>Live architectural operations across the 4-phase system</p>
+              <p>Live architectural operations across the digital twin system</p>
             </div>
             <button className="outline-button small-button" onClick={loadPlatformData}>Refresh</button>
           </div>
@@ -524,7 +524,7 @@ export default function DashboardPage({
                   <strong style={{ fontSize: '12px', display: 'block' }}>{ev.title}</strong>
                   <span style={{ fontSize: '11px', color: '#64748B' }}>{ev.detail}</span>
                 </div>
-                <span className="pill success">{ev.phase}</span>
+                <span className="pill success">{ev.module || String(ev.phase || '').replace(/Phase \d+[AB]?:?\s*/i, '') || 'Live'}</span>
               </div>
             ))}
           </div>

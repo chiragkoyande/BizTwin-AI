@@ -12,12 +12,23 @@ export default function Sidebar({
   setMobileNav,
   search,
   setSearch,
-  dataset
+  dataset,
+  userProfile
 }) {
   const ds = dataset || {
     name: 'DataCo Supply Chain (2015-2018)',
     rows: 180519
   };
+
+  const profileName = userProfile?.name || 'Sam Joshi';
+  const profileRole = userProfile?.role || 'Enterprise Admin';
+  const initials = profileName
+    .split(' ')
+    .filter(Boolean)
+    .map((n) => n[0])
+    .slice(0, 2)
+    .join('')
+    .toUpperCase() || 'SJ';
 
   return (
     <aside className={`sidebar ${mobileNav ? 'open' : ''}`}>
@@ -94,16 +105,26 @@ export default function Sidebar({
         <div className="help-card">
           <div className="help-icon"><CircleHelp size={18} /></div>
           <strong>Evaluation Review Ready</strong>
-          <p>Demonstrates all 4 architectural phases defined in the SMB Digital Twin paper.</p>
+          <p>Demonstrates the complete digital twin architecture defined in the SMB Digital Twin paper.</p>
           <button onClick={() => setPage('models')}>
             View Benchmark Specs <ArrowRight size={13} />
           </button>
         </div>
-        <div className="profile">
-          <div className="profile-avatar">SJ</div>
-          <div>
-            <strong>Sam Joshi</strong>
-            <small>Enterprise Admin</small>
+
+        <div
+          className="profile"
+          onClick={() => setPage('settings')}
+          style={{ cursor: 'pointer', transition: 'background 0.15s ease' }}
+          title="Click to edit profile & account settings"
+        >
+          <div className="profile-avatar">{initials}</div>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <strong style={{ display: 'block', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+              {profileName}
+            </strong>
+            <small style={{ display: 'block', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+              {profileRole}
+            </small>
           </div>
           <Settings size={16} color="#64748B" />
         </div>

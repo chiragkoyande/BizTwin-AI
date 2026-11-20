@@ -3,7 +3,7 @@ from fastapi import APIRouter
 from app.models.schemas import AssistantInput
 from app.services.assistant_service import process_graphrag_assistant
 
-router = APIRouter(tags=["Phase 4: GraphRAG Assistant"])
+router = APIRouter(tags=["GraphRAG Assistant"])
 
 @router.post("/api/assistant")
 @router.post("/api/assistant/graphrag")

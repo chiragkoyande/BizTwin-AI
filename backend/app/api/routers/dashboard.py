@@ -81,9 +81,9 @@ def dashboard():
 def platform_activity():
     return {
         "events": [
-            {"title": "DataCo Pipeline Active", "detail": "180,519 records synchronized", "status": "Online", "phase": "Phase 1"},
-            {"title": "GNN Knowledge Graph Synced", "detail": "65 heterogeneous nodes · 94 edges", "status": "Online", "phase": "Phase 2"},
-            {"title": "TFT Quantile Model Ready", "detail": "P10, P50, P90 Multi-Horizon Attention", "status": "Trained", "phase": "Phase 3A"},
-            {"title": "Pearl's SCM Decision Engine", "detail": "Do-Calculus Interventions Online", "status": "Active", "phase": "Phase 3B"},
+            {"title": "DataCo Pipeline Active", "detail": "180,519 records synchronized", "status": "Online", "module": "Streaming", "phase": "Streaming"},
+            {"title": "GNN Knowledge Graph Synced", "detail": "65 heterogeneous nodes · 94 edges", "status": "Online", "module": "Semantic Graph", "phase": "Semantic Graph"},
+            {"title": "TFT Quantile Model Ready", "detail": "P10, P50, P90 Multi-Horizon Attention", "status": "Trained", "module": "TFT Forecast", "phase": "TFT Forecast"},
+            {"title": "Pearl's SCM Decision Engine", "detail": "Do-Calculus Interventions Online", "status": "Active", "module": "Causal AI", "phase": "Causal AI"},
         ]
     }

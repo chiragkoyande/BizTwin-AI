@@ -24,7 +24,7 @@ def process_graphrag_assistant(question: str) -> dict:
             "[5-Tier Semantic DAG: Consumer -> Cleats -> Central DC -> Standard Fleet -> Late Risk -> SLA Penalties]",
             "[Financial Impact Vector: -$1.24M Drag on Operating Margin]"
         ]
-        suggested_action = "Simulate shifting 25% of Standard Carrier volume to First Class Express in Phase 3B."
+        suggested_action = "Simulate shifting 25% of Standard Carrier volume to First Class Express in Causal AI Sandbox."
         extracted_entities = [
             {"entity": "CustomerSegment:Consumer", "type": "Demand Root", "val": "60% Order Vol"},
             {"entity": "Category:Cleats & Footwear", "type": "Product Line", "val": "$7.32M Sales"},
@@ -48,7 +48,7 @@ def process_graphrag_assistant(question: str) -> dict:
             "[Knowledge Graph: LogisticsCarrier:First Class Express (37% Volume)]",
             "[SCM Counterfactual: Carrier Mode Optimization]"
         ]
-        suggested_action = "In Phase 3B Sandbox, adjust supplier delay and test dynamic carrier allocation."
+        suggested_action = "In Causal AI Sandbox, adjust supplier delay and test dynamic carrier allocation."
         extracted_entities = [
             {"entity": "Logistics:Standard Carrier Fleet", "type": "Primary Freight", "val": "63% Volume · 54.8% Risk"},
             {"entity": "LogisticsCarrier:First Class Express", "type": "Priority Carrier", "val": "37% Volume · 91.8% OTD"},
@@ -83,17 +83,17 @@ def process_graphrag_assistant(question: str) -> dict:
 
     elif any(k in q for k in ("tft", "forecast", "transformer", "quantile", "horizon", "mae", "mape", "benchmark")):
         answer = (
-            "Phase 3A Temporal Fusion Transformer (TFT) Architecture & Evaluation: "
+            "Temporal Fusion Transformer (TFT) Architecture & Evaluation: "
             "• TFT holds the Champion benchmark with MAE 198.70 and MAPE 4.76%, outperforming iTransformer (214.2), PatchTST (221.8), and LSTM (231.5). "
-            "• Variable Selection Networks (VSN) allocate 28.4% weight to autoregressive lags and 22.6% to Phase 2 GNN bottleneck embeddings. "
+            "• Variable Selection Networks (VSN) allocate 28.4% weight to autoregressive lags and 22.6% to Semantic Graph GNN bottleneck embeddings. "
             "• Outputs non-parametric P10 (conservative risk), P50 (expected median), and P90 (capacity headroom) quantile cones over 6-week forward horizons."
         )
         citations = [
-            "[Phase 3A Benchmark: TFT vs 7 Deep DL Baselines (MAE 198.70)]",
+            "[TFT Benchmark: TFT vs 7 Deep DL Baselines (MAE 198.70)]",
             "[Variable Selection Network: GNN Bottleneck Feature Gating (22.6%)]",
             "[Quantile Loss Function: P10-P50-P90 Attention Heads]"
         ]
-        suggested_action = "Inspect the VSN Feature Importance and Attention Heatmap in Phase 3A."
+        suggested_action = "Inspect the VSN Feature Importance and Attention Heatmap in TFT Forecasting."
         extracted_entities = [
             {"entity": "Champion Model: TFT", "type": "Deep Transformer", "val": "MAE 198.70 · MAPE 4.76%"},
             {"entity": "VSN Lag Feature", "type": "Autoregressive Input", "val": "28.4% Attention Weight"},
@@ -104,17 +104,17 @@ def process_graphrag_assistant(question: str) -> dict:
 
     elif any(k in q for k in ("causal", "do-calculus", "counterfactual", "intervention", "pearl", "scm", "what-if")):
         answer = (
-            "Phase 3B Pearl's Structural Causal Model (SCM) & Do-Calculus: "
+            "Pearl's Structural Causal Model (SCM) & Do-Calculus: "
             "• Backdoor Criterion adjustments eliminate confounding bias between marketing spend, dynamic pricing, and delivery delays. "
             "• Moving do(Marketing) +20% uplifts revenue by +6.8%, while do(Dynamic Pricing) -5% stimulates demand by +4.1%. "
             "• Mitigating supplier delays by do(Delay = -3 days) prevents $42,000/month in SLA penalty deductions from Net Operating Margin."
         )
         citations = [
-            "[Phase 3B: Pearl's Do-Calculus SCM Sandbox]",
+            "[Pearl's Do-Calculus SCM Sandbox]",
             "[Backdoor Criterion: Confounding Adjustment on Marketing-Demand-Delay DAG]",
             "[Counterfactual Output: Net Margin Optimization at 12.8%]"
         ]
-        suggested_action = "Navigate to Phase 3B: Causal AI Sandbox to manipulate live intervention sliders."
+        suggested_action = "Navigate to Causal AI Sandbox to manipulate live intervention sliders."
         extracted_entities = [
             {"entity": "Pearl's SCM Engine", "type": "Causal Graph", "val": "Do-Calculus Interventions"},
             {"entity": "do(Marketing)", "type": "Intervention Node", "val": "+20% → +6.8% Revenue"},
@@ -187,14 +187,14 @@ def process_graphrag_assistant(question: str) -> dict:
         citations = ["[Neo4j Enterprise Graph]", "[Temporal Fusion Transformer]", "[Pearl's Do-Calculus SCM]"]
         suggested_action = "Ask: 'What are the key delivery risks?' or 'Project our future cash flow'."
         extracted_entities = [
-            {"entity": "Heterogeneous Graph", "type": "Phase 2", "val": "18 Entities · 24 Directed Links"},
-            {"entity": "Temporal Fusion Transformer", "type": "Phase 3A", "val": "P10/P50/P90 Multi-Horizon"},
-            {"entity": "Pearl's Do-Calculus", "type": "Phase 3B", "val": "Causal Counterfactual SCM"}
+            {"entity": "Heterogeneous Graph", "type": "Semantic Graph", "val": "18 Entities · 24 Directed Links"},
+            {"entity": "Temporal Fusion Transformer", "type": "TFT Forecast", "val": "P10/P50/P90 Multi-Horizon"},
+            {"entity": "Pearl's Do-Calculus", "type": "Causal AI", "val": "Causal Counterfactual SCM"}
         ]
         intervention_params = {"marketing_change": 15, "price_change": -5, "supplier_delay": 3}
 
     return {
-        "engine": "Phase 4: GraphRAG Grounded Strategic Agent",
+        "engine": "GraphRAG Grounded Strategic Agent",
         "question": question,
         "answer": answer,
         "grounded_citations": citations,

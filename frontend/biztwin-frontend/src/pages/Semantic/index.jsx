@@ -7,7 +7,7 @@ import {
   bottleneckNodeIds
 } from '../../constants/graphData';
 
-export default function Phase2SemanticPage({
+export default function SemanticPage({
   graphFilter,
   setGraphFilter,
   selectedNode,
@@ -71,7 +71,7 @@ export default function Phase2SemanticPage({
       <div className="panel" style={{ marginBottom: '16px' }}>
         <div className="panel-heading">
           <div>
-            <h3>Phase 2: Semantic Business Graph &amp; GNN Architecture</h3>
+            <h3>Semantic Business Graph &amp; GNN Architecture</h3>
             <p>Multi-hop structural dependencies learned via Graph Convolutional Networks (Widescreen DAG Architecture)</p>
           </div>
           <div style={{ display: 'flex', gap: '8px' }}>

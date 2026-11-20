@@ -66,7 +66,7 @@ def build_semantic_graph(limit: int = 10) -> dict:
         edges.append({"source": rev_node, "target": cash_node, "relation": "DETERMINES_MARGIN", "weight": nodes[rev_node]["value"] * 0.12, "confidence": 0.97})
 
     return {
-        "architecture": "Phase 2: Heterogeneous Semantic Business Graph + Graph Neural Network",
+        "architecture": "Heterogeneous Semantic Business Graph + Graph Neural Network",
         "nodes": list(nodes.values()),
         "edges": edges,
         "gnn_link_prediction": {

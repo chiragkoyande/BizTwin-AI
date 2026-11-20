@@ -1,6 +1,6 @@
 def get_benchmark_models(target: str = "revenue") -> dict:
     return {
-        "title": "Phase 3A: Deep Learning Time-Series Forecasting Benchmarks",
+        "title": "Deep Learning Time-Series Forecasting Benchmarks",
         "target": target.capitalize(),
         "selected_best_model": "Temporal Fusion Transformer (TFT)",
         "evaluation_protocol": "Chronological 80/20 Holdout Split with Quantile Evaluation",

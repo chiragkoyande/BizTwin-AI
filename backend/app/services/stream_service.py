@@ -51,12 +51,12 @@ def start_streaming(background_tasks, interval: float = 0.4, limit: int = 200) -
         IS_STREAMING = True
         background_tasks.add_task(_streaming_task, interval, limit)
         return {
-            "message": "Phase 1: Multi-Modal Ingestion Streaming pipeline started.",
+            "message": "Multi-Modal Ingestion Streaming pipeline started.",
             "status": "running",
             "interval_seconds": interval,
         }
     return {
-        "message": "Phase 1: Multi-Modal Ingestion Streaming is already active.",
+        "message": "Multi-Modal Ingestion Streaming is already active.",
         "status": "running",
     }
 
@@ -65,7 +65,7 @@ def stop_streaming() -> dict:
     IS_STREAMING = False
     STREAM_STATS["status"] = "stopped"
     return {
-        "message": "Phase 1: Streaming pipeline paused.",
+        "message": "Streaming pipeline paused.",
         "status": "stopped",
         "total_records_ingested": STREAM_STATS["records_ingested"],
     }

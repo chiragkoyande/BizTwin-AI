@@ -5,7 +5,7 @@ import {
   ShieldCheck, SlidersHorizontal, Sparkles, Zap
 } from 'lucide-react';
 
-export default function Phase4AssistantPage({
+export default function AssistantPage({
   assistantQ,
   setAssistantQ,
   assistantLoading,
@@ -118,7 +118,7 @@ export default function Phase4AssistantPage({
                         <div style={{ width: '22px', height: '22px', borderRadius: '6px', background: '#4F46E5', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#FFFFFF' }}>
                           <Brain size={13} />
                         </div>
-                        <span style={{ fontSize: '12px', fontWeight: 700, color: '#1E293B' }}>Phase 4 GraphRAG Strategic Agent</span>
+                        <span style={{ fontSize: '12px', fontWeight: 700, color: '#1E293B' }}>GraphRAG Strategic Agent</span>
                       </div>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                         <span className="pill purple" style={{ fontSize: '10px' }}>
@@ -147,7 +147,7 @@ export default function Phase4AssistantPage({
                             onClick={() => executeInterventionInSandbox(msg.responseObj.suggested_intervention_params)}
                             style={{ marginTop: '8px', display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '6px 12px', background: '#4F46E5', color: '#FFFFFF', borderRadius: '6px', border: 'none', fontSize: '11px', fontWeight: 600, cursor: 'pointer' }}
                           >
-                            <SlidersHorizontal size={12} /> Execute Strategic Intervention in Phase 3B SCM Sandbox
+                            <SlidersHorizontal size={12} /> Execute Strategic Intervention in Causal SCM Sandbox
                           </button>
                         )}
                       </div>
@@ -238,7 +238,7 @@ export default function Phase4AssistantPage({
                 <button onClick={() => askAssistant('What are the customer segments and regional spend?')}>
                   Analyze Customer Segments &amp; Regions
                 </button>
-                <button onClick={() => askAssistant('Explain Phase 3A TFT Deep Transformer Accuracy')}>
+                <button onClick={() => askAssistant('Explain TFT Deep Transformer Accuracy')}>
                   Explain TFT Deep DL Benchmark (4.76% MAPE)
                 </button>
                 <button onClick={() => askAssistant('What is the total revenue and projected 6-week cash flow?')}>
@@ -340,11 +340,11 @@ export default function Phase4AssistantPage({
             </div>
           </div>
 
-          {/* Card 3: Cross-Phase Architecture Quick Links */}
+          {/* Card 3: Integrated Architecture Links */}
           <div className="panel">
             <div className="panel-heading">
               <div>
-                <h3>Cross-Phase Architecture</h3>
+                <h3>Integrated Architecture Links</h3>
                 <p>Direct navigation to underlying models</p>
               </div>
               <span className="pill sky"><GitBranch size={12} /> Deep Links</span>
@@ -357,7 +357,7 @@ export default function Phase4AssistantPage({
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                   <Network size={15} style={{ color: '#4F46E5', flexShrink: 0 }} />
                   <div>
-                    <div style={{ fontSize: '11.5px', fontWeight: 600, color: '#1E293B' }}>Phase 2: Semantic Graph</div>
+                    <div style={{ fontSize: '11.5px', fontWeight: 600, color: '#1E293B' }}>Semantic Knowledge Graph</div>
                     <div style={{ fontSize: '10px', color: '#64748B' }}>Inspect 65 Semantic Nodes &amp; GNN Embeddings</div>
                   </div>
                 </div>
@@ -370,7 +370,7 @@ export default function Phase4AssistantPage({
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                   <Brain size={15} style={{ color: '#4F46E5', flexShrink: 0 }} />
                   <div>
-                    <div style={{ fontSize: '11.5px', fontWeight: 600, color: '#1E293B' }}>Phase 3A: TFT Forecasting</div>
+                    <div style={{ fontSize: '11.5px', fontWeight: 600, color: '#1E293B' }}>TFT Multi-Horizon Forecasting</div>
                     <div style={{ fontSize: '10px', color: '#64748B' }}>Review P10–P90 Bounds &amp; VSN Feature Weights</div>
                   </div>
                 </div>
@@ -383,7 +383,7 @@ export default function Phase4AssistantPage({
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                   <SlidersHorizontal size={15} style={{ color: '#4F46E5', flexShrink: 0 }} />
                   <div>
-                    <div style={{ fontSize: '11.5px', fontWeight: 600, color: '#1E293B' }}>Phase 3B: Pearl's SCM Sandbox</div>
+                    <div style={{ fontSize: '11.5px', fontWeight: 600, color: '#1E293B' }}>Pearl's Causal SCM Sandbox</div>
                     <div style={{ fontSize: '10px', color: '#64748B' }}>Simulate do-calculus Interventions</div>
                   </div>
                 </div>

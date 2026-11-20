@@ -8,11 +8,11 @@ def root():
         "platform": "Digital Twin for Small Businesses Platform",
         "status": "operational",
         "architecture": {
-            "phase_1": "Multi-Modal Ingestion Pipeline (Kafka / DataCo Streaming Engine)",
-            "phase_2": "Semantic Business Graph & GNN Engine (5-Tier DAG)",
-            "phase_3a": "Temporal Fusion Transformer (TFT) Multi-Horizon Deep Forecasting",
-            "phase_3b": "Pearl's Structural Causal Model (SCM) & Do-Calculus Counterfactual Sandbox",
-            "phase_4": "GraphRAG Grounded Strategic Agent & Executive Multilingual Localization",
+            "ingestion_stream": "Multi-Modal Ingestion Pipeline (Kafka / DataCo Streaming Engine)",
+            "semantic_graph": "Semantic Business Graph & GNN Engine (5-Tier DAG)",
+            "forecast_engine": "Temporal Fusion Transformer (TFT) Multi-Horizon Deep Forecasting",
+            "causal_scm": "Pearl's Structural Causal Model (SCM) & Do-Calculus Counterfactual Sandbox",
+            "assistant_agent": "GraphRAG Grounded Strategic Agent & Executive Multilingual Localization",
         },
         "docs_url": "/docs",
     }

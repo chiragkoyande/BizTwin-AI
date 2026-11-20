@@ -13,11 +13,11 @@ export const navSections = [
   {
     category: 'RESEARCH ARCHITECTURE',
     items: [
-      { id: 'streaming', label: 'Phase 1: Ingestion Stream', icon: Layers, badge: 'Streaming' },
-      { id: 'semantic', label: 'Phase 2: Semantic Graph', icon: Network, badge: 'GNN' },
-      { id: 'forecast', label: 'Phase 3A: TFT Forecasting', icon: Brain, badge: 'TFT DL' },
-      { id: 'causal', label: 'Phase 3B: Causal AI Sandbox', icon: SlidersHorizontal, badge: 'Do-Calculus' },
-      { id: 'assistant', label: 'Phase 4: GraphRAG Assistant', icon: Sparkles, badge: 'Agentic' },
+      { id: 'streaming', label: 'Ingestion Stream', icon: Layers, badge: 'Streaming' },
+      { id: 'semantic', label: 'Semantic Graph', icon: Network, badge: 'GNN' },
+      { id: 'forecast', label: 'TFT Forecasting', icon: Brain, badge: 'TFT DL' },
+      { id: 'causal', label: 'Causal AI Sandbox', icon: SlidersHorizontal, badge: 'Do-Calculus' },
+      { id: 'assistant', label: 'GraphRAG Assistant', icon: Sparkles, badge: 'Agentic' },
     ]
   },
   {

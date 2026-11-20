@@ -5,7 +5,7 @@ from app.services.forecast_service import (
     get_tft_forecast,
 )
 
-router = APIRouter(tags=["Phase 3A: Deep Forecasting"])
+router = APIRouter(tags=["Deep Forecasting"])
 
 @router.get("/api/forecast/tft")
 def tft_forecast(target: str = "future_cash_flow"):

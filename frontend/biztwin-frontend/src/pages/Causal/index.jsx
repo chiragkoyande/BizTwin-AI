@@ -6,7 +6,7 @@ import {
 } from 'recharts';
 import { money, number, pct } from '../../format';
 
-export default function Phase3BCausalPage({
+export default function CausalPage({
   marketingChange,
   setMarketingChange,
   priceChange,
@@ -35,7 +35,7 @@ export default function Phase3BCausalPage({
         <div className="panel">
           <div className="panel-heading">
             <div>
-              <h3>Phase 3B: Pearl's Do-Calculus Counterfactual Sandbox</h3>
+              <h3>Pearl's Do-Calculus Counterfactual Sandbox</h3>
               <p>Evaluate operational business interventions before real-world execution</p>
             </div>
             <span className="pill success">SCM Propagation Active</span>

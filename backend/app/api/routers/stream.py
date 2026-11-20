@@ -7,7 +7,7 @@ from app.services.stream_service import (
     stop_streaming,
 )
 
-router = APIRouter(tags=["Phase 1: Streaming Ingestion"])
+router = APIRouter(tags=["Streaming Ingestion"])
 
 @router.post("/api/v1/stream/start")
 async def api_start_stream(background_tasks: BackgroundTasks, interval: float = 0.4, limit: int = 200):
