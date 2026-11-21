@@ -2,6 +2,9 @@
 
 Enterprise-grade Digital Twin Platform powered by Multi-Modal Graph Neural Networks (GNN), Temporal Fusion Transformers (TFT), and Pearl's Counterfactual Structural Causal Models (SCM).
 
+> 📖 **Comprehensive Academic & Viva Guide:** See [PROJECT_MASTER_GUIDE_AND_VIVA_HANDBOOK.md](PROJECT_MASTER_GUIDE_AND_VIVA_HANDBOOK.md) for the complete 20-chapter architectural blueprint, source-code breakdown, technology masterclass, and 285+ viva question bank.  
+> 🚀 **Client Quickstart:** See [CLIENT_QUICKSTART.md](CLIENT_QUICKSTART.md) for the one-click `run.bat` deployment guide.
+
 ---
 
 ## ⚡ Quickstart (One-Click Launch)
