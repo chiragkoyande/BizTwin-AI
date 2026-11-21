@@ -203,10 +203,29 @@ if not exist "%BACKEND_DIR%\.env" (
 call "%ROOT_DIR%stop.bat" >nul 2>&1
 
 echo   Starting Backend API Server (FastAPI on http://127.0.0.1:8000)...
-start "Digital Twin - Backend API" cmd /k "title Digital Twin - Backend API && cd /d ""%BACKEND_DIR%"" && call ""%VENV_DIR%\Scripts\activate.bat"" && python -m uvicorn main:app --host 127.0.0.1 --port 8000 --reload"
+start "Digital Twin - Backend API" cmd /k "title Digital Twin - Backend API && cd /d ""%BACKEND_DIR%"" && call ""%VENV_DIR%\Scripts\activate.bat"" && python -m uvicorn main:app --host 127.0.0.1 --port 8000"
 
 echo   Starting Frontend Dashboard (Vite on http://localhost:5173)...
 start "Digital Twin - Frontend UI" cmd /k "title Digital Twin - Frontend UI && cd /d ""%FRONTEND_DIR%"" && npm run dev"
+
+echo.
+echo   Waiting for Backend API and Frontend services to initialize...
+set "API_READY=0"
+for /l %%i in (1,1,12) do (
+    if "!API_READY!"=="0" (
+        powershell -NoProfile -Command "(New-Object Net.WebClient).DownloadString('http://127.0.0.1:8000/api/health')" >nul 2>&1
+        if not errorlevel 1 (
+            set "API_READY=1"
+        ) else (
+            timeout /t 1 /nobreak >nul
+        )
+    )
+)
+if "!API_READY!"=="1" (
+    echo   [OK] Backend API is online and responding.
+) else (
+    echo   [INFO] Services launching in background.
+)
 
 echo.
 echo ======================================================================
@@ -218,8 +237,8 @@ echo   • FastAPI Backend   : http://127.0.0.1:8000
 echo   • Interactive Docs  : http://127.0.0.1:8000/docs
 echo   • Subsystem Health  : http://127.0.0.1:8000/api/health
 echo.
-echo   Opening your default web browser in 4 seconds...
-timeout /t 4 /nobreak >nul
+echo   Opening your default web browser...
+timeout /t 2 /nobreak >nul
 start http://localhost:5173
 
 echo.
